@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@a
 import { TableConfig } from '@spryker/table';
 
 @Component({
+    standalone: false,
     selector: 'mp-dashboard-table',
     templateUrl: './dashboard-table.component.html',
     styleUrls: ['./dashboard-table.component.less'],

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, Input } from '@angular/core';
 
 @Component({
+    standalone: false,
     selector: 'mp-dashboard-stats-block',
     templateUrl: './dashboard-stats-block.component.html',
     styleUrls: ['./dashboard-stats-block.component.less'],

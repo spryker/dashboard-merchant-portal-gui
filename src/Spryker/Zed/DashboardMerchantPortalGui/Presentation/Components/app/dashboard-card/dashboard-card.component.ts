@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, Input } from '@angular/core';
 
 @Component({
+    standalone: false,
     selector: 'mp-dashboard-card',
     templateUrl: './dashboard-card.component.html',
     styleUrls: ['./dashboard-card.component.less'],

@@ -1,53 +1,60 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CardModule } from '@spryker/card';
-import { createComponentWrapper, getTestingForComponent } from '@mp/zed-ui/testing';
 import { DashboardCardComponent } from './dashboard-card.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
+@Component({
+    template: `
+        <mp-dashboard-card [count]="count">
+            <span title>Title Content</span>
+            <span actions>Actions Content</span>
+            <span class="default-slot">Default Content</span>
+        </mp-dashboard-card>
+    `,
+    standalone: false,
+})
+class TestHostComponent {
+    @Input() count?: string;
+}
 
 describe('DashboardCardComponent', () => {
-    const { testModule, createComponent } = getTestingForComponent(DashboardCardComponent, {
-        ngModule: {
+    let fixture: ComponentFixture<TestHostComponent>;
+
+    beforeEach(async () => {
+        TestBed.configureTestingModule({
+            declarations: [DashboardCardComponent, TestHostComponent],
             imports: [CardModule],
             schemas: [NO_ERRORS_SCHEMA],
-        },
-        projectContent: `
-            <span title></span>
-            <span actions></span>
-            <span class="default-slot"></span>
-        `,
-    });
-
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [testModule],
         });
+
+        fixture = TestBed.createComponent(TestHostComponent);
+        await fixture.detectChanges();
     });
 
-    it('should render `title` slot to the `.ant-card-head-title` element', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const titleSlot = host.queryCss('.ant-card-head-title [title]');
+    it('should render `title` slot to the `.ant-card-head-title` element', () => {
+        const titleSlot = fixture.debugElement.query(By.css('.ant-card-head-title [title]'));
 
         expect(titleSlot).toBeTruthy();
     });
 
-    it('should render `actions` slot to the `.ant-card-extra` element', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const actionsSlot = host.queryCss('.ant-card-extra [actions]');
+    it('should render `actions` slot to the `.ant-card-extra` element', () => {
+        const actionsSlot = fixture.debugElement.query(By.css('.ant-card-extra [actions]'));
 
         expect(actionsSlot).toBeTruthy();
     });
 
-    it('should render default slot to the `.ant-card-body` element', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const defaultSlot = host.queryCss('.ant-card-body .default-slot');
+    it('should render default slot to the `.ant-card-body` element', () => {
+        const defaultSlot = fixture.debugElement.query(By.css('.ant-card-body .default-slot'));
 
         expect(defaultSlot).toBeTruthy();
     });
 
-    it('should render <spy-chips> component to the `.ant-card-head-title` element if `@Input(count)` has bound', async () => {
+    it('should render <spy-chips> component to the `.ant-card-head-title` element if `@Input(count)` has bound', () => {
         const mockCount = '5';
-        const host = await createComponentWrapper(createComponent, { count: mockCount });
-        const chipsComponent = host.queryCss('.ant-card-head-title spy-chips');
+        fixture.componentRef.setInput('count', mockCount);
+        fixture.detectChanges();
+        const chipsComponent = fixture.debugElement.query(By.css('.ant-card-head-title spy-chips'));
 
         expect(chipsComponent).toBeTruthy();
         expect(chipsComponent.nativeElement.textContent).toContain(mockCount);

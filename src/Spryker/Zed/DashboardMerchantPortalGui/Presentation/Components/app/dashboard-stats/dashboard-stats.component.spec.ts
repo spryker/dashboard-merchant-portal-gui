@@ -1,37 +1,42 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CardModule } from '@spryker/card';
-import { createComponentWrapper, getTestingForComponent } from '@mp/zed-ui/testing';
 import { DashboardStatsComponent } from './dashboard-stats.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
-describe('DashboardStatsComponent', () => {
-    const { testModule, createComponent } = getTestingForComponent(DashboardStatsComponent, {
-        ngModule: {
-            imports: [CardModule],
-            schemas: [NO_ERRORS_SCHEMA],
-        },
-        projectContent: `
+@Component({
+    template: `
+        <mp-dashboard-stats>
             <span title></span>
             <span class="default-slot"></span>
-        `,
-    });
+        </mp-dashboard-stats>
+    `,
+    standalone: false,
+})
+class TestHostComponent {}
 
-    beforeEach(() => {
+describe('DashboardStatsComponent', () => {
+    let fixture: ComponentFixture<TestHostComponent>;
+
+    beforeEach(async () => {
         TestBed.configureTestingModule({
-            imports: [testModule],
+            declarations: [DashboardStatsComponent, TestHostComponent],
+            imports: [CardModule],
+            schemas: [NO_ERRORS_SCHEMA],
         });
+
+        fixture = TestBed.createComponent(TestHostComponent);
+        await fixture.detectChanges();
     });
 
-    it('should render `title` slot to the `.ant-card-head-title` element', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const titleSlot = host.queryCss('.ant-card-head-title [title]');
+    it('should render `title` slot to the `.ant-card-head-title` element', () => {
+        const titleSlot = fixture.debugElement.query(By.css('.ant-card-head-title [title]'));
 
         expect(titleSlot).toBeTruthy();
     });
 
-    it('should render default slot to the `.ant-card-body` element', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const defaultSlot = host.queryCss('.ant-card-body .default-slot');
+    it('should render default slot to the `.ant-card-body` element', () => {
+        const defaultSlot = fixture.debugElement.query(By.css('.ant-card-body .default-slot'));
 
         expect(defaultSlot).toBeTruthy();
     });

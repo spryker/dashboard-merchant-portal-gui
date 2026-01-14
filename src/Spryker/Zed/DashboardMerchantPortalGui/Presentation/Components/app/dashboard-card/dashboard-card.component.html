@@ -5,7 +5,9 @@
 <ng-template #title>
     <ng-content select="[title]"></ng-content>
 
-    <spy-chips *ngIf="count" color="gray">{{ count }}</spy-chips>
+    @if (count) {
+        <spy-chips color="gray">{{ count }}</spy-chips>
+    }
 </ng-template>
 
 <ng-template #actions>
