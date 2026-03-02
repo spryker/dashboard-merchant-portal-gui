@@ -17,11 +17,6 @@ class DashboardMerchantPortalGuiDependencyProvider extends AbstractBundleDepende
      */
     public const PLUGINS_DASHBOARD_CARD = 'PLUGINS_DASHBOARD_CARD';
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = $this->addDashboardCardPlugins($container);
@@ -29,11 +24,6 @@ class DashboardMerchantPortalGuiDependencyProvider extends AbstractBundleDepende
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addDashboardCardPlugins(Container $container): Container
     {
         $container->set(static::PLUGINS_DASHBOARD_CARD, function () {
